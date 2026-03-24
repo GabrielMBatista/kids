@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-orange: #f97316;
+  --color-brand-blue: #38bdf8;
+  --color-brand-pink: #f472b6;
+  --color-bg-sky: #f0f9ff;
+  --font-nunito: var(--font-nunito);
+  --font-baloo: var(--font-baloo);
+}
+
+/* Kids safe scrolling & selection */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  overscroll-behavior-y: none;
+}
+
+/* Custom styles for animations or game specific overlays can go here */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
