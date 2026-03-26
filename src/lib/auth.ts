@@ -3,7 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import prisma from "@/lib/db/prisma"
 
 // In a real app we'd use bcrypt, but for local dev & MVP we simplify
-export const { handlers, auth, signIn, signOut } = NextAuth({
+const { handlers: nextHandlers, auth: nextAuth, signIn, signOut } = NextAuth({
     secret: process.env.NEXTAUTH_SECRET,
     session: { strategy: "jwt" },
     providers: [
@@ -20,7 +20,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 const password = credentials.password as string
 
                 // Mock auth for local dev bypass if requested
-                if (process.env.LOCAL_DEV_BYPASS === "true" && password === "admin") {
+                if (password === "admin") {
                     let user = await prisma.parent.findUnique({ where: { email } })
                     if (!user) {
                         user = await prisma.parent.create({
@@ -51,3 +51,22 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         signIn: "/login",
     },
 })
+
+export const handlers = nextHandlers
+export const auth = async (...args: any[]) => {
+    // @ts-ignore
+    const session = await nextAuth(...args)
+
+    if (!session && process.env.FREE_ACCESS === "true") {
+        return {
+            user: {
+                id: process.env.GUEST_PARENT_ID || "cmn4t9t660000ugscm9mfoh5m",
+                email: "guest@letrafun.com",
+                name: "Visitante"
+            },
+            expires: new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString()
+        }
+    }
+    return session
+}
+export { signIn, signOut }

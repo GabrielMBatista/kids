@@ -17,7 +17,7 @@ export default function Home() {
         </p>
 
         <div className="flex flex-col gap-4 items-center">
-          <Link href="/login" className="w-full max-w-xs">
+          <Link href="/dashboard" className="w-full max-w-xs">
             <Button size="lg" className="w-full text-2xl" variant="primary">
               Jogar Agora!
             </Button>

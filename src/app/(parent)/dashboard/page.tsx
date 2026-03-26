@@ -10,6 +10,7 @@ import { createChild, selectChild, resetAllProgress } from "@/lib/actions/child"
 export default async function DashboardPage() {
     const session = await auth()
 
+    // session will always exist if FREE_ACCESS is true due to auth() wrapper
     if (!session?.user?.id) {
         redirect("/login")
     }
